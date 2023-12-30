@@ -1,0 +1,68 @@
+from fake_useragent import UserAgent
+useragent = UserAgent()
+
+cookies = {
+    'jobs': '3005b3d81b46ff2d1b213d4c2320bd98',
+    'jobs': '3005b3d81b46ff2d1b213d4c2320bd98',
+    'jobs': '87bbe6eb27b761f489aaa784086066d1',
+    'AWSALBAPP-1': '_remove_',
+    'AWSALBAPP-2': '_remove_',
+    'AWSALBAPP-3': '_remove_',
+    'NSESSIONID': 's%3A3AxX0JvLdzWZUxE_Ispsj7q-3kv56Kzq.LZEFjjxQpiL2EjG%2FdLUOimmh%2BgPtdW08YybJSd9AIMc',
+    'geo': 'IN',
+    's_fid': '3CEBE4B9AB7BDF43-25CFE494D87EE8ED',
+    's_cc': 'true',
+    's_vi': '[CS]v1|32C1414E1F1F3DB9-40001BAE820B24BA[CE]',
+    'aa_lastvisit': '1703052669867',
+    's_orientation': '%5B%5BB%5D%5D',
+    's_pathLength': 'no%20channel%3D3%2C',
+    's_ips': '4489',
+    's_tp': '13258',
+    's_ppv': 'jobs%253Aen-in%253Ashanghai%253Ashanghai%252C%2520china%2520-%2520careers%2520at%2520apple%2C34%2C34%2C4489%2C6%2C20',
+    's_plt': '%5B%5BB%5D%5D',
+    's_pltp': '%5B%5BB%5D%5D',
+    'mk_epub': '%7B%22btuid%22%3A%224rgp0e%22%2C%22prop57%22%3A%22www.us.sitemap%22%7D',
+    'pt-dm': 'v1~x~axgnuy10~m~1~n~apple%20-%20site%20map%20(us)',
+    'gpv': 'jobs%3Aen-in%3Ajob%20details%3Amanufacturing-infrastructure-data-program-manager-product-operations',
+    'AWSALBAPP-0': 'AAAAAAAAAAAmM1CC4hraQY+oEPHXahlPFaj1A3ckCaNNN7nfMukJQHaiV6qhi2HN+FS70HxY9mgFZZtxFEki15PYPwgx0KRCSerjTrpIyz3L8sG1ggHfmdNOPZJyCzFPZrN2nXBsAJPusHs=',
+    's_getNewRepeat': '1703053086454-New',
+    's_sq': 'appleusjobs%3D%2526c.%2526a.%2526activitymap.%2526page%253Djobs%25253Aen-in%25253Ajob%252520details%25253Amanufacturing-infrastructure-data-program-manager-product-operations%2526link%253DAdditional%252520Requirements%2526region%253Dtranslations-container%2526pageIDType%253D1%2526.activitymap%2526.a%2526.c%2526pid%253Djobs%25253Aen-in%25253Ajob%252520details%25253Amanufacturing-infrastructure-data-program-manager-product-operations%2526pidt%253D1%2526oid%253Dfunctionan%252528%252529%25257B%25257D%2526oidt%253D2%2526ot%253DSUBMIT%26undefined%3D%2526pid%253Dhttps%25253A%25252F%25252Fwww.apple.com%25252Fcareers%25252Fin%25252Fwork-at-apple%25252Fshanghai.html%2526oid%253Dhttps%25253A%25252F%25252Fjobs.apple.com%25252Fen-us%25252Fsearch%25253Flocation%25253Dshanghai-state157%252526team%25253Danalog-and-digital-design-HRDWR-%2526ot%253DA',
+}
+
+headers = {
+            'authority': 'jobs.apple.com',
+            'accept': '*/*',
+            'accept-language': 'en-US,en;q=0.9',
+            'cache-control': 'no-cache',
+            'content-type': 'application/json',
+            'locale': 'en-in',
+            'pragma': 'no-cache',
+            'referer': 'https://jobs.apple.com/en-in/search?location=india-INDC',
+            'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120", "Microsoft Edge";v="120"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
+            'txnid': '4d3bca6e-cbf3-4ec3-82e9-d804d2a60db3',
+            'user-agent': useragent.random
+                        }
+
+prod_headers = {
+    'authority': 'jobs.apple.com',
+    'accept': '*/*',
+    'accept-language': 'en-US,en;q=0.9',
+    'cache-control': 'no-cache',
+    'countrycode': 'INDC',
+    'locale': 'en_UK',
+    'pragma': 'no-cache',
+    'referer': 'https://jobs.apple.com/en-in/details/200314033/in-operations-expert?team=APPST',
+    'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120", "Microsoft Edge";v="120"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-origin',
+    'user-agent': useragent.random,
+    'x-requested-with': 'XMLHttpRequest',
+}

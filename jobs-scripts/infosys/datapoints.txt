@@ -1,0 +1,17 @@
+If any of the thing is not present in the data then leave it empty.
+(Twitter, Company url if not in data check from google and add it and if company twitter not there leave empty)
+
+
+company: Name of the company
+job_url
+job_title
+job_id: If there scrap else empty
+job_description
+job_type: (Freelance. Temporary, Internship, PartTime or FullTime) if given add it else leave empty
+experience
+location
+skills
+company_twitter: if not there in data points check from google and add manually
+qualification
+company_website: Take the company website link from google and add it
+date_posted
