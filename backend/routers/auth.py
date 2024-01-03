@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends, Response
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from pymongo.database import Database
@@ -7,7 +7,7 @@ from email.utils import format_datetime
 from schemas import RegisterUser, settings, TokenModel
 from utils import hash_password, verify_password
 from database import get_mongo_db
-import oauth2
+import oauth2 
 from typing import Annotated
 
 router = APIRouter()
@@ -43,7 +43,7 @@ async def user_login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     with get_mongo_db() as db:
         collection = db["users"]
         user_exists = collection.find_one({"email":form_data.username})
-        print(user_exists)
+        #print(user_exists)
         if user_exists:
             hashed_password = user_exists["password"]
             if await verify_password(form_data.password, hash_password=hashed_password):
@@ -51,23 +51,27 @@ async def user_login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
                 userdata = {"sub":user_exists["email"], "role":user_exists["role"]}
                 access_token, exp= await oauth2.create_access_token(userdata)
                 #print(access_token, exp)
+                response = JSONResponse(content= {"message":"Login successful"})
+                #response = Response()
                 exp_utc = exp.replace(tzinfo=timezone.utc)
                 formatted_expiry = format_datetime(exp_utc, usegmt=True)
                 print(formatted_expiry)
 
-                response = JSONResponse(content={"message": "Login Successful"})
+                
                 
                 response.set_cookie(key="access_token", 
-                                    value=access_token, domain="http://localhost:5173", secure=True, expires=formatted_expiry)
-                
-                print(response)
-                print(response.body)
+                                    value=access_token,
+                                    httponly=True,
+                                    expires=formatted_expiry, 
+                )       # SOS: Always change and add a domain parameter for front end 
+                # print(response)
+                # print(response.body)
                 #print(response.cookies)
-                return response    
+                
+                return response
         
                 #return {"access_token":access_token, "token_type":"bearer"}
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                                  detail="Wrong credentials!!")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                              detail="Wrong credentials")
-

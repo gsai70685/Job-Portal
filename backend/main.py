@@ -29,3 +29,9 @@ if __name__ == "__main__":
 
     # Specify the module (main) and app instance (app) for uvicorn to run
     uvicorn.run("main:app", host="127.0.0.1", port=8000)
+
+
+def hello():
+    pass
+
+print("Hello")

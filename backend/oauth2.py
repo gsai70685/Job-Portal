@@ -41,6 +41,7 @@ async def get_current_user(token:Annotated[str, Depends(oauth2_scheme)]):
         headers={"WWW-Authenticate":"Bearer"}
     )
     try:
+        print(token)
         payload = jwt.decode(token, settings.SECRET, algorithms=[settings.JWT_ALGORITHM])
         email: EmailStr = payload.get("sub")
         if email is None:
@@ -51,4 +52,5 @@ async def get_current_user(token:Annotated[str, Depends(oauth2_scheme)]):
     user = await get_user(email=token_data.email)
     if user is None:
         raise credential_exception
+    print(user)
     return user
