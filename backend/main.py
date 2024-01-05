@@ -23,7 +23,7 @@ app.include_router(jobs_crud.router, tags=["Jobs Data"], prefix="/jobs")
 app.include_router(reg_admin_hr.router, tags=["AdminAuth"], prefix="/register")
 app.include_router(blogs.router, tags=["Blogs"], prefix="/blog")
 
-if __name__ == "__main__":
+if __name__ == "__main_":
     # Specify the module and app instance for uvicorn to run
     import uvicorn
 
