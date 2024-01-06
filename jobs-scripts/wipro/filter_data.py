@@ -3,14 +3,18 @@ import pymongo
 from dotenv import load_dotenv
 import os
 import datetime
+from urllib.parse import quote_plus
+
+
 
 load_dotenv()
 
 # Retrieve MongoDB connection information from environment variables
 username = os.environ.get("SERVER_USER")
 password = os.environ.get("SERVER_PASS")
+password_ = quote_plus(password)
 host = os.environ.get("HOST")
-uri = f"mongodb://{username}:{password}@{host}:27017"
+uri = f"mongodb+srv://{username}:{password_}@{host}/?retryWrites=true&w=majority"
 
 def main(data:dict, company=None):
     with pymongo.MongoClient(uri) as client:
@@ -22,7 +26,7 @@ def main(data:dict, company=None):
         return result
 
 def add_data_to_statustable(data:dict, client)-> bool:
-    database = client["JobStatus"]
+    database = client["jobsportal"]
     collection = database["scrapstatus"]
     existing_url = collection.find_one({"job_url": data["job_url"]})
     if existing_url:
@@ -65,4 +69,13 @@ def check_data(company, data, client) ->bool:
         print(f"New job for {company} added with job URL {data['job_url']}.")
     return True
 
-
+def update_table(company, urls_set):
+    with pymongo.MongoClient(uri) as client:
+            database = client["jobsportal"]
+            collection = database["jobs_meta"]
+            all_wipro_jobs = collection.find({"company":company})
+            for jobs in all_wipro_jobs:
+                job_url = jobs.get("job_url")
+                if job_url not in urls_set:
+                    collection.delete_one({"_id":jobs["_id"]})
+    return True

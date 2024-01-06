@@ -1,6 +1,6 @@
 import requests
 from utils import HEADERS
-from filter_data import main
+from filter_data import main, update_table
 import datetime
 
 class WiproJobs:
@@ -12,6 +12,7 @@ class WiproJobs:
     def __init__(self) -> None:
         self.pgNo = 1
         self.total_pages = 0
+        self.all_urls = set()
         self.session = requests.Session()
 
     @classmethod
@@ -64,11 +65,21 @@ class WiproJobs:
                             if data_added:
                                 update_status = {"company": "Wipro", "job_url": url_, "scraped": "S"}
                                 status_update = main(data=update_status)
+                                self.all_urls.add(url_)
+
+    def remove_expired_jobs(self):
+        updated = update_table("Wipro", self.all_urls)
+        if updated:
+            print("Table is up to date!")
+            self.all_urls.clear()
+        else:
+            print("something went wrong while updating")
 
 if __name__ == "__main__":
     wiproscrapper = WiproJobs()
     pages = wiproscrapper.number_of_pages()
     if pages:
         wiproscrapper.get_data()
+        wiproscrapper.remove_expired_jobs()
     else:
         print("Sorry there were no jobs or something went wrong!!")
