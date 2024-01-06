@@ -3,18 +3,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import {useHistory} from 'react-router-dom';
 
 
 
 const SignUp = () => {
 
-  const history = useHistory();
-
   document.title = "signup";
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
 
   const handleSubmit = async (e) => {
@@ -25,18 +23,19 @@ const SignUp = () => {
     // Add your sign-up logic here
     try{
       const response = await axios.post('http://127.0.0.1:8000/register', {username, email, password});
-      console.log(response.data);
-      setUsername('');
-      setEmail('');
-      setPassword('');
-      if (response.status == 201) {
-
-        history.push('/login')
-        
-      }
+      console.log(response)
+      // setMessage("User created successfully. Please login.");
+      // setUsername('');
+      // setEmail('');
+      // setPassword('');
     }
     catch (error){
-      console.log('Error: ', error.response.data);
+      console.log(error)
+      if (error.response){
+        console.log(error.response.data.detail);
+      }else{
+        setMessage("An error occured. Please try again later");
+      }
     }
   };
 
@@ -44,6 +43,7 @@ const SignUp = () => {
     <div className="auth-container">
       <form onSubmit={handleSubmit} className="auth-form">
         <h2>Sign Up</h2>
+        {/* {message && <p className="auth-message">{message}</p>} Display message */}
         <div className="input-container">
           <input
             type="text"

@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, status, Request
+from fastapi import Depends, HTTPException, status, Request, Security
 from jose import jwt, ExpiredSignatureError, JWTError
 from schemas import settings, TokenData
 from database import get_mongo_db
@@ -7,8 +7,42 @@ from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
 from pydantic import EmailStr
 from pymongo.database import Database
+from fastapi import Request
+from fastapi.responses import JSONResponse
+from fastapi.middleware import Middleware
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+# oauth2_scheme = Security(get_current_user)
+# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
+
+async def get_current_user(request : Request):
+    token = get_token_from_cookies(request)
+    #print("token in get_current_user", token)
+    credential_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate":"Bearer"}
+    )
+    try:
+        #print(token)
+        payload = jwt.decode(token, settings.SECRET, algorithms=[settings.JWT_ALGORITHM])
+        email: EmailStr = payload.get("sub")
+        if email is None:
+            raise credential_exception
+        token_data = TokenData(email=email)
+    except JWTError:
+        raise credential_exception
+    user = await get_user(email=token_data.email)
+    if user is None:
+        raise credential_exception
+    print(user)
+    return user
+
+
+
+oauth2_scheme = Security(get_current_user)
+
+
 
 def get_token_from_cookies(request: Request):
 
@@ -34,21 +68,3 @@ async def get_user(email:str, db:Database = Depends(get_mongo_db)):
                     "role":is_user["role"]}
 
 
-async def get_current_user(token:Annotated[str, Depends(oauth2_scheme)]):
-    credential_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate":"Bearer"}
-    )
-    try:
-        payload = jwt.decode(token, settings.SECRET, algorithms=[settings.JWT_ALGORITHM])
-        email: EmailStr = payload.get("sub")
-        if email is None:
-            raise credential_exception
-        token_data = TokenData(email=email)
-    except JWTError:
-        raise credential_exception
-    user = await get_user(email=token_data.email)
-    if user is None:
-        raise credential_exception
-    return user

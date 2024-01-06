@@ -73,6 +73,7 @@ class TokenData(BaseModel):
 class BlogCreate(BaseModel):
     title: str = ...
     description: str = ...
+    author : str 
     image: Optional[str] |  None
     updated_at : Optional[datetime] = datetime.utcnow()
     created_at : Optional[datetime] = datetime.utcnow()
