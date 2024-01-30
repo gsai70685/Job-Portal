@@ -1,15 +1,16 @@
 from passlib.context import CryptContext #It allows us to hash password using various algorithms
-from passlib.hash import bcrypt
 import secrets
 import string
+import os
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+os.chdir(SCRIPT_DIR)
+cwd = os.path.abspath(os.getcwd())
+foldername = os.path.join(cwd, "media", "Logo")
 
 async def hash_password(password:str) -> str:
-    #print(pwd_context.hash(password))
-    hashed_pass = bcrypt.hash(password)
-    print(hashed_pass, type(hashed_pass))
-    return hashed_pass
+    return pwd_context.hash(password)
 
 async def verify_password(password:str, hash_password:str) -> bool:
     return pwd_context.verify(password, hash_password)
